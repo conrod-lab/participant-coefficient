@@ -34,7 +34,7 @@ def generate_dummy_data(num_communities, max_community_node, min_community_node,
             W_within_communities[node, selected_node] = 1
     
     # Drop an edge within the first community
-    first_community_nodes = np.where(Ci == 1)[0]
+    first_community_nodes = np.where(Ci == 2)[0]
     node1, node2 = np.random.choice(first_community_nodes, size=2, replace=False)
     W_within_communities[node1, node2] = 0
     W_within_communities[node2, node1] = 0    
@@ -79,20 +79,22 @@ plot_network_with_participation(G_case1, PC,selected_node)
 
 # Case 2: Full participation scenario
 num_communities = 3
-max_community_node = 3
+max_community_node = 6
 min_community_node = 3
-interconnectivity = 0  # Probability of being connected to a community
-W, Ci = generate_dummy_data(num_communities, max_community_node, min_community_node, interconnectivity)
+interconnectivity = 0.1  # Probability of being connected to a community
+W, Ci, selected_node = generate_dummy_data(num_communities, max_community_node, min_community_node, interconnectivity)
+
+PC = participation_coef(W, Ci)
 
 PC_norm_case2, _, _, _ = participation_coef_norm(W, Ci, n_iter=10)
 print("\nCase 2 - Full participation scenario:")
 print("Participation Coefficients:", PC_norm_case2)
 
 # Create NetworkX graph
-G_case2 = nx.from_numpy_array(W)
+G_case1 = nx.from_numpy_array(W)
 
 # Plot network with participation coefficients
-plot_network_with_participation(G_case2, PC_norm_case2)
+plot_network_with_participation(G_case1, PC,selected_node)
 
 # Case 3: Intermediate participation scenario
 num_nodes = 20
