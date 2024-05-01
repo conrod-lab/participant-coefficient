@@ -67,7 +67,7 @@ W, Ci, selected_node = generate_dummy_data(num_communities, max_community_node, 
 
 PC = participation_coef(W, Ci)
 
-PC_norm_case1, _, _, _ = participation_coef_norm(W, Ci, n_iter=10)
+PC_norm_case1,PC_residual, _, Ko = participation_coef_norm(W, Ci, n_iter=10)
 print("Case 1 - Non-participation scenario:")
 print("Participation Coefficients:", PC_norm_case1)
 
@@ -75,7 +75,7 @@ print("Participation Coefficients:", PC_norm_case1)
 G_case1 = nx.from_numpy_array(W)
 
 # Plot network with participation coefficients
-plot_network_with_participation(G_case1, PC,selected_node)
+plot_network_with_participation(G_case1, PC_norm_case1,selected_node)
 
 # Case 2: Full participation scenario
 num_communities = 3
@@ -86,15 +86,15 @@ W, Ci, selected_node = generate_dummy_data(num_communities, max_community_node, 
 
 PC = participation_coef(W, Ci)
 
-PC_norm_case2, _, _, _ = participation_coef_norm(W, Ci, n_iter=10)
-print("\nCase 2 - Full participation scenario:")
-print("Participation Coefficients:", PC_norm_case2)
+PC_norm_case2,PC_residual, _, Ko = participation_coef_norm(W, Ci, n_iter=10)
+print("Case 2 - Non-participation scenario:")
+print("Participation Coefficients:", PC_norm_case1)
 
 # Create NetworkX graph
-G_case1 = nx.from_numpy_array(W)
+G_case2 = nx.from_numpy_array(W)
 
 # Plot network with participation coefficients
-plot_network_with_participation(G_case1, PC,selected_node)
+plot_network_with_participation(G_case2, PC_norm_case2,selected_node)
 
 # Case 3: Intermediate participation scenario
 num_nodes = 20
