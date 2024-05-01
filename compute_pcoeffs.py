@@ -1,5 +1,22 @@
 import numpy as np
 from bct import null_model_und_sign, randmio_dir
+import scipy.sparse as sp
+
+def participation_coef(W, Ci):
+    n = W.shape[0]  # number of vertices
+    Ko = np.array(W.sum(axis=1)).flatten().astype(float)  # (out) degree
+    Gc = np.dot((W != 0), np.diag(Ci))  # neighbor community affiliation
+    Gc = sp.csr_matrix(Gc)
+    P = np.zeros((n))  # community-specific neighbors
+
+    # Assuming Gc is a sparse matrix
+    for i in range(1, int(np.max(Ci)) + 1):
+        P = P + (np.array((sp.csr_matrix(W).multiply(Gc == i).astype(int)).sum(axis=1)).flatten() / Ko)**2
+    P = 1 - P
+    # P=0 if for nodes with no (out) neighbors
+    P[np.where(np.logical_not(Ko))] = 0    
+    return P
+
 
 def participation_coef_norm(W, Ci, n_iter=10, par_comp=0):
     import time

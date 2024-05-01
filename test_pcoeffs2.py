@@ -2,7 +2,8 @@ import numpy as np
 import pandas as pd
 import networkx as nx
 import matplotlib.pyplot as plt
-from compute_pcoeffs import participation_coef_norm
+from compute_pcoeffs import *
+
 
 def generate_dummy_data(num_communities, max_community_node, min_community_node, interconnectivity):
     # Generate community sizes
@@ -64,6 +65,7 @@ min_community_node = 3
 interconnectivity = 0.1  # Probability of being connected to a community
 W, Ci, selected_node = generate_dummy_data(num_communities, max_community_node, min_community_node, interconnectivity)
 
+PC = participation_coef(W, Ci)
 
 PC_norm_case1, _, _, _ = participation_coef_norm(W, Ci, n_iter=10)
 print("Case 1 - Non-participation scenario:")
@@ -73,7 +75,7 @@ print("Participation Coefficients:", PC_norm_case1)
 G_case1 = nx.from_numpy_array(W)
 
 # Plot network with participation coefficients
-plot_network_with_participation(G_case1, PC_norm_case1,selected_node)
+plot_network_with_participation(G_case1, PC,selected_node)
 
 # Case 2: Full participation scenario
 num_communities = 3
